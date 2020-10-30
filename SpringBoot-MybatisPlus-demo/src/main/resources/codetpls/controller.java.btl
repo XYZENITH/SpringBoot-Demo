@@ -1,0 +1,93 @@
+package ${package.Controller};
+
+import org.springframework.web.bind.annotation.*;
+<% if(isNotEmpty(superControllerClassPackage)){ %>
+import ${superControllerClassPackage};
+<% } %>
+<% if(isNotEmpty(cfg.controllerMethods.list)){  %>
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+<% } %>
+<% if(isNotEmpty(cfg.controllerMethods.hasMethod)){  %>
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
+import com.xyz.springboot.demo1.message.page.BasePageMsg;
+import ${package.Service}.${table.serviceName};
+import ${package.Entity}.${table.entityName};
+import org.springframework.beans.factory.annotation.Autowired;
+<% } %>
+
+/**
+* @author ${author}
+* @title: ${table.comment!}控制器
+* @projectName ${package.ModuleName}
+* @date ${date}
+* @description: ${table.comment!}控制器
+* @ModifyRecord： 修改日期: 修改内容
+*/
+@RestController
+@RequestMapping("<% if(isNotEmpty(package.ModuleName)){ %>/${package.ModuleName}<% } %>/<% if(isNotEmpty(controllerMappingHyphenStyle)){ %>${controllerMappingHyphen}<% }else{ %>${table.entityPath}<% } %>")
+@Api(tags = "${table.controllerName}Controller接口")
+<% if(kotlin){ %>
+class ${table.controllerName}<% if(isNotEmpty(superControllerClass)){ %> : ${superControllerClass}()<% } %>
+<% }else{ %>
+    <% if(isNotEmpty(superControllerClass)){ %>
+public class ${table.controllerName} extends ${superControllerClass} {
+    <% }else{ %>
+public class ${table.controllerName} {
+    <% } %>
+
+    <%
+       var serviceInstanceName = @cn.hutool.core.util.StrUtil.lowerFirst(table.serviceName);
+    %>
+
+    <% if(isNotEmpty(cfg.controllerMethods.hasMethod)){  %>
+    @Autowired
+    private ${table.serviceName} ${serviceInstanceName};
+    <% } %>
+
+    <% if(isNotEmpty(cfg.controllerMethods.list)){  %>
+    @ApiOperation(value = "分页查询", notes = "${table.entityName}分页查询", httpMethod = "GET")
+    @GetMapping(value = "/get_${table.entityName}s")
+    public Page<${table.entityName}> list(@Valid @RequestBody BasePageMsg basePageMsg) {
+       Page<${table.entityName}> aPage = ${serviceInstanceName}.page(new Page<>(basePageMsg.getCurrent(), basePageMsg.getPageSize()));
+        return aPage;
+    }
+    <% } %>
+
+    <% if(isNotEmpty(cfg.controllerMethods.getById)){ %>
+    @ApiOperation(value = "查询一条数据", notes = "查询${table.entityName}", httpMethod = "GET")
+    @GetMapping(value = "/get_${table.entityName}/{id}")
+    public ${table.entityName} getById(@PathVariable("id") String id) {
+        return ${serviceInstanceName}.getById(id);
+    }
+    <% } %>
+
+    <% if(isNotEmpty(cfg.controllerMethods.create)){ %>
+    @ApiOperation(value = "新建一条数据", notes = "新建${table.entityName}", httpMethod = "POST")
+    @PostMapping(value = "/create_${table.entityName}")
+    public String create(@Valid @RequestBody ${table.entityName} params) {
+        ${serviceInstanceName}.save(params);
+        return "created successfully";
+    }
+    <% } %>
+
+    <% if(isNotEmpty(cfg.controllerMethods.delete)){ %>
+    @ApiOperation(value = "删除一条数据", notes = "删除${table.entityName}", httpMethod = "POST")
+    @PostMapping(value = "/delete_${table.entityName}/{id}")
+    public String delete(@PathVariable("id") String id) {
+        ${serviceInstanceName}.removeById(id);
+        return "deleted successfully";
+    }
+    <% } %>
+
+    <% if(isNotEmpty(cfg.controllerMethods.update)){ %>
+    @ApiOperation(value = "更新一条数据", notes = "更新${table.entityName}", httpMethod = "POST")
+    @PostMapping(value = "/update_${table.entityName}")
+    public String update(@Valid @RequestBody ${table.entityName} params) {
+        ${serviceInstanceName}.updateById(params);
+        return "updated successfully";
+    }
+    <% } %>
+}
+<% } %>

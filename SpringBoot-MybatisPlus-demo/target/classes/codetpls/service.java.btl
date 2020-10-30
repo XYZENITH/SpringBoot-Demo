@@ -1,0 +1,21 @@
+package ${package.Service};
+
+import ${package.Entity}.${entity};
+import ${superServiceClassPackage};
+
+
+/**
+* @author ${author}
+* @title: ${table.comment!}服务接口
+* @projectName ${package.ModuleName}
+* @date ${date}
+* @description: ${table.comment!}服务接口
+* @ModifyRecord： 修改日期: 修改内容
+*/
+<% if(kotlin){ %>
+interface ${table.serviceName} : ${superServiceClass}<${entity}>
+<% }else{ %>
+public interface ${table.serviceName} extends ${superServiceClass}<${entity}> {
+
+}
+<% } %>

@@ -1,0 +1,26 @@
+package ${package.ServiceImpl};
+
+import ${package.Entity}.${entity};
+import ${package.Mapper}.${table.mapperName};
+import ${package.Service}.${table.serviceName};
+import ${superServiceImplClassPackage};
+import org.springframework.stereotype.Service;
+
+/**
+* @author ${author}
+* @title: ${table.comment!}服务实现类
+* @projectName ${package.ModuleName}
+* @date ${date}
+* @description: ${table.comment!}服务服务实现类
+* @ModifyRecord： 修改日期: 修改内容
+*/
+@Service
+<% if(kotlin){ %>
+open class ${table.serviceImplName} : ${superServiceImplClass}<${table.mapperName}, ${entity}>(), ${table.serviceName} {
+
+}
+<% }else{ %>
+public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.mapperName}, ${entity}> implements ${table.serviceName} {
+
+}
+<% } %>

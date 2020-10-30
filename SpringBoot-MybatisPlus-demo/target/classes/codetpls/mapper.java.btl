@@ -1,0 +1,20 @@
+package ${package.Mapper};
+
+import ${package.Entity}.${entity};
+import ${superMapperClassPackage};
+
+/**
+* @author ${author}
+* @title: ${table.comment!}Mapper 接口
+* @projectName ${package.ModuleName}
+* @date ${date}
+* @description: ${table.comment!}Mapper 接口
+* @ModifyRecord： 修改日期: 修改内容
+*/
+<% if(kotlin){ %>
+interface ${table.mapperName} : ${superMapperClass}<${entity}>
+<% }else{ %>
+public interface ${table.mapperName} extends ${superMapperClass}<${entity}> {
+
+}
+<% } %>
