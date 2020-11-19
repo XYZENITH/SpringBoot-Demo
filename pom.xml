@@ -18,6 +18,7 @@
     <modules>
         <module>SpringBoot-Knife4j-demo</module>
         <module>SpringBoot-MybatisPlus-demo</module>
+        <module>SpringBoot-dubbo-demo</module>
     </modules>
     <packaging>pom</packaging>
 
